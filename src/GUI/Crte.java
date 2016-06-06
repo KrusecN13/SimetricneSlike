@@ -16,7 +16,7 @@ public class Crte {
 		this.starY=starY;
 		this.color = color;
 	}
-
+//nariše èrte
 	public void narisi(Graphics g) {
 		g.setColor(color);
 		g.drawLine(x, y, starX, starY);

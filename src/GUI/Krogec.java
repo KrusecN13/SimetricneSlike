@@ -19,7 +19,7 @@ public class Krogec {
 		this.platno = platno;
 		this.color = color;
 	}
-	
+//nariše krogec	
 	public void narisi(Graphics g) {
 		g.setColor(color);
 		g.fillOval(x, y, 2*polmer+1, 2*polmer+1);

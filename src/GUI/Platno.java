@@ -25,15 +25,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseMotionListener, MouseListener , ActionListener {
-	List<Krogec> krogci;
-	List<Crte> crte;
+	List<Krogec> krogci; // zgodovina vseh krogcev
+	List<Crte> crte; // zgodovina vseh èrt
 
-	private int sirina;
-	private int visina;
-	private boolean cezX;
+	private int sirina; // širina platna
+	private int visina; // višina platna
+	private boolean cezX; // možne simetrije
 	private boolean cezY;
 	private boolean cezS;
-	private int x, y, starX, starY;
+	private int x, y, starX, starY; // shranjene koordinate
 	private boolean svincnik;
 	private Color color;
 	private int velikostCopica;
@@ -63,6 +63,7 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 	}
 
 	@Override
+	// nariše krogce ali èrte, odvisno od izbranega risala (èopiè ali svinènik)
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		for (Krogec k : this.krogci) {
@@ -76,12 +77,14 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 	
 
 	@Override
+	// shrani trenutne koordinate ob kliku
 	public void mousePressed(MouseEvent e){
 		x=e.getX();
 		y=e.getY();
 	}
 	
 	@Override
+	// shrani koordinate ob potegu miške 
 	public void mouseDragged(MouseEvent e) {
 		starX = this.x;
 		starY = this.y;
@@ -90,7 +93,8 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 		narisi();
 
 	}
-
+	
+	// shrani vse potrebne parametre
 	private void narisi() {
 		if (svincnik) {
 			List<Vector<Double>> koordinate1 = potrebneKoordinate(x,y);
@@ -116,7 +120,8 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 		}
 		}
 		}
-		
+	
+	// vrne zrcaljene vektorje
 	private List<Vector<Double>> potrebneKoordinate(int x, int y){
 		List<Vector<Double>> sezKoor = new ArrayList<Vector<Double>>() ;
 		if(cezX){
@@ -144,7 +149,7 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 	}
 
 	
-
+	//nariše krogec in ga doda v seznam krogci
 	private void narisiKrogce(int x, int y,Graphics g) {
 		Krogec k = new Krogec(this, x, y,velikostCopica, color);
 		k.narisi(g);
@@ -152,7 +157,7 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 		}
 		
 	
-
+	//nariše èrto in jo doda v seznam crte
 	private void narisiCrte(int x, int y,int starX, int starY ,Graphics g) {
 		Crte c = new Crte(this,x,y,starX,starY,color);
 		c.narisi(g);
@@ -162,7 +167,7 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 	
 	
 
-
+	// pobriše seznama krogci in crte
 	public void pobrisi() {
 			this.krogci = new ArrayList<Krogec>();
 			this.crte = new ArrayList<Crte>();
@@ -193,7 +198,7 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 
 	
 	
-
+	// nastavi želene parametre za risanje
 	public void rdeca(){
 		this.color= Color.red;
 	}
@@ -237,6 +242,7 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 		}
 	}
 	
+	// ustvari BufferedImage iz platna - kar je do sedaj narisano
 	public BufferedImage narediSliko(){
 		int s = getWidth();
 		int v = getHeight();
@@ -247,12 +253,14 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 
 	}
 	
+	// ustvarjeno sliko shrani kamor uporabnik želi
 	public void shraniSliko() throws IOException{
 		BufferedImage bi=narediSliko();
 		JFileChooser fileChooser = new JFileChooser();
 		 fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		 fileChooser.setSelectedFile(new File("Slika.png"));
 		 fileChooser.setFileFilter(new FileNameExtensionFilter("png","png"));
+		  
 		if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 			String filename = fileChooser.getSelectedFile().toString();
 			if(filename.endsWith(".png")){
