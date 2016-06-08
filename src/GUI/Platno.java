@@ -33,6 +33,8 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 	private boolean cezX; // možne simetrije
 	private boolean cezY;
 	private boolean cezS;
+	private boolean cezP;
+	private int stSim;
 	private int x, y, starX, starY; // shranjene koordinate
 	private boolean svincnik;
 	private Color color;
@@ -54,6 +56,8 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 		this.cezX = false;
 		this.cezY = true;
 		this.cezS = false;
+		this.cezP = false;
+		this.stSim = 5;
 		this.velikostCopica = 2;
 	}
 	
@@ -145,6 +149,17 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 			zrcaljen.add(-vektor.lastElement());
 			sezKoor.add(koordinatePlatno(zrcaljen));
 		}
+		if(cezP){
+			double k = 2*Math.PI/stSim;
+			for(int i=1;i<=stSim;i++){
+				Vector<Double> vektor = koordinate(x, y);
+				Vector<Double> zrcaljen = new Vector<Double>(2);
+				zrcaljen.add(Math.cos(k*i)*vektor.firstElement()- Math.sin(k*i)*vektor.lastElement());
+				zrcaljen.add(Math.sin(k*i)*vektor.firstElement()+ Math.cos(k*i)*vektor.lastElement());
+				sezKoor.add(koordinatePlatno(zrcaljen));
+				
+			}
+		}
 		return sezKoor;
 	}
 
@@ -225,12 +240,15 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 	}
 	public void cezX(){
 		this.cezX= (false==cezX);
+		this.cezP=false;
 	}
 	public void cezY(){
 		this.cezY= (false==cezY);
+		this.cezP=false;
 	}
 	public void cezS(){
 		this.cezS= (false==cezS);
+		this.cezP=false;
 	}
 	
 	public void velikostCopicaPlus(){
@@ -241,6 +259,18 @@ public class Platno extends JPanel implements MouseMotionListener, MouseListener
 		velikostCopica=velikostCopica-1;
 		}
 	}
+	
+	public void cezP(){
+		this.cezP=(false==cezP);
+		this.cezS = false;
+		this.cezX= false;
+		this.cezY= false;
+	}
+	
+	public void stSim(int i){
+		stSim=i;
+	}
+	
 	
 	// ustvari BufferedImage iz platna - kar je do sedaj narisano
 	public BufferedImage narediSliko(){
