@@ -25,6 +25,7 @@ public class GlavnoOkno extends JFrame {
 	private int sirina;
 	private JTextField textField_2;
 	private JCheckBox cezP;
+	private JTextField textfield;
 
 	public GlavnoOkno() throws HeadlessException {
 		super();
@@ -411,11 +412,15 @@ public class GlavnoOkno extends JFrame {
 		gbc_textField_2.gridy = 1;
 		getContentPane().add(textField_2, gbc_textField_2);
 		textField_2.setColumns(10);
+		
+		//nastavi textfield parameter da ga  lahko resetiramo na 5 ko naredimo novo platno
+		textfield=textField_2;
 	}
 	
 	
 	//ustvari novo platno z novimi dimenzijami
 	public void novoPlatno() {
+		textfield.setText("5");
 		odstraniCezP();
 		platno.setVisible(false);
 		platno = new Platno(this, sirina, visina);
